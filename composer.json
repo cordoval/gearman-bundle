@@ -34,7 +34,7 @@
 	},
 	"autoload":    {
 		"psr-0": {
-			"Uecode\\Gearman": "src/"
+			"Uecode\\GearmanBundle": "src/"
 		}
 	}
 }
