@@ -1,7 +1,8 @@
 <?php
-namespace Uecode\Gearman\DependancyInjection;
+namespace Uecode\GearmanBundle\DependancyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
@@ -23,26 +24,46 @@ class Configuration implements ConfigurationInterface
 		$rootNode = $treeBuilder->root( 'uecode_gearman' );
 
 		$rootNode
-			->arrayNode( 'connection' )
-				->children()
-					->scalarNode( 'host' )
-						->isRequired()
-						->defaultValue( '127.0.0.1' )
-						->cannotBeEmpty()
-					->end()
-					->scalarNode( 'port' )
-						->isRequired()
-						->defaultValue( '4730' )
-						->cannotBeEmpty()
-					->end()
-				->end()
-			->end()
+			->append( $this->getConnectionsNode() )
 			->scalarNode( 'debug' )
 				->defaultValue( 'false' )
 			->end()
 		;
 
 		return $treeBuilder;
+	}
+
+	/**
+	 * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition
+	 */
+	private function getConnectionsNode()
+	{
+		$treeBuilder = new TreeBuilder();
+		$node = $treeBuilder->root( 'connections' );
+
+		$connectionNode = $node
+			->requiresAtLeastOneElement()
+			->useAttributeAsKey( 'name' )
+			->prototype( 'array' )
+		;
+		return $connectionNode;
+	}
+
+	/**
+	 * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node
+	 */
+	private function configureGearmanConnectionNode( ArrayNodeDefinition $node )
+	{
+		$node
+			->children()
+				->scalarNode( 'host' )
+					->defaultValue( '127.0.0.1' )
+				->end()
+				->scalarNode( 'port' )
+					->defaultValue( '4730' )
+				->end()
+			->end();
+
 	}
 
 }

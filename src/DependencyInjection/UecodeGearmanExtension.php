@@ -3,7 +3,7 @@
  * @author Aaron Scherer
  * @date 10/8/12
  */
-namespace Uecode\Gearman;
+namespace Uecode\GearmanBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Uecode\Gearman\DependancyInjection\Configuration;
