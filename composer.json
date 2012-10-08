@@ -1,10 +1,10 @@
 {
-	"name":        "Uecode/GearmanBundle",
+	"name":        "uecode/gearman-bundle",
 	"version":     "0.1.0",
 	"type":        "library",
 	"description": "Symfony2 Gearman Bundle",
 	"keywords":    ["php", "gearman", "job"],
-	"homepage":    "https://github.com/Uecode/GearmanBundle",
+	"homepage":    "https://github.com/uecode/gearman-bundle",
 	"license":     "MIT",
 	"authors":     [
 		{
