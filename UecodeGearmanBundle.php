@@ -1,6 +1,8 @@
 <?php
 namespace Uecode\GearmanBundle;
-/**
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
+	/**
  * @author Aaron Scherer
  * @date 10/8/12
  */
@@ -8,7 +10,7 @@ namespace Uecode\GearmanBundle;
 /**
  * UEcode Gearman Bundle
  */
-class UecodeGearmanBundle
+class UecodeGearmanBundle extends Bundle
 {
 
 }
