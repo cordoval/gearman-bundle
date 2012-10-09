@@ -26,7 +26,21 @@ class Configuration implements ConfigurationInterface
 		$rootNode
 			->arrayNode( 'gearman' )
 				->children()
-					->append( $this->getConnectionsNode() )
+					->fixXmlConfig( 'connection' )
+					->arrayNode( 'connections' )
+						->requiresAtLeadOneElement()
+						->useAttributeAsKey( 'name' )
+						->prototype( 'array' )
+							->children()
+								->scalarNode( 'host' )
+									->defaultValue( '127.0.0.1' )
+								->end()
+								->scalarNode( 'port' )
+									->defaultValue( '4730' )
+								->end()
+							->end()
+						->end()
+					->end()
 					->scalarNode( 'debug' )
 						->defaultValue( 'false' )
 					->end()
@@ -36,38 +50,4 @@ class Configuration implements ConfigurationInterface
 
 		return $treeBuilder;
 	}
-
-	/**
-	 * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition
-	 */
-	private function getConnectionsNode()
-	{
-		$treeBuilder = new TreeBuilder();
-		$node = $treeBuilder->root( 'connections' );
-
-		$connectionNode = $node
-			->requiresAtLeastOneElement()
-			->useAttributeAsKey( 'name' )
-			->prototype( 'array' )
-		;
-		return $connectionNode;
-	}
-
-	/**
-	 * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $node
-	 */
-	private function configureGearmanConnectionNode( ArrayNodeDefinition $node )
-	{
-		$node
-			->children()
-				->scalarNode( 'host' )
-					->defaultValue( '127.0.0.1' )
-				->end()
-				->scalarNode( 'port' )
-					->defaultValue( '4730' )
-				->end()
-			->end();
-
-	}
-
 }
