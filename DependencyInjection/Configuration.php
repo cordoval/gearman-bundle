@@ -21,12 +21,16 @@ class Configuration implements ConfigurationInterface
 	public function getConfigTreeBuilder()
 	{
 		$treeBuilder = new TreeBuilder();
-		$rootNode = $treeBuilder->root( 'uecode_gearman' );
+		$rootNode = $treeBuilder->root( 'uecode' );
 
 		$rootNode
-			->append( $this->getConnectionsNode() )
-			->scalarNode( 'debug' )
-				->defaultValue( 'false' )
+			->arrayNode( 'gearman' )
+				->children()
+					->append( $this->getConnectionsNode() )
+					->scalarNode( 'debug' )
+						->defaultValue( 'false' )
+					->end()
+				->end()
 			->end()
 		;
 

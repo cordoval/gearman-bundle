@@ -6,6 +6,12 @@
 namespace Uecode\GearmanBundle;
 use Symfony\Component\DependencyInjection\Container;
 
+// Gearman Classes
+use GearmanClient;
+use GearmanException;
+use GearmanJob;
+use GearmanTask;
+
 
 class Client
 {
@@ -20,13 +26,66 @@ class Client
 	 */
 	protected $configs;
 
+	/**
+	 * @var GearmanClient
+	 */
+	protected $client;
+
+
+	/**
+	 * @param \Symfony\Component\DependencyInjection\Container $container
+	 */
 	public function init( Container $container )
 	{
 		$this
 			->setContainer( $container )
-			->setConfigs( $container->getParameter( 'uecode_gearman' ) );
+			->setConfigs( $container->getParameter( 'uecode.gearman' ) )
+			->setGearmanClient( new GearmanClient() )
+			->initializeConnections();
 	}
 
+	/**
+	 *
+	 */
+	public function initializeConnections()
+	{
+		foreach( $this->configs[ 'connections' ] as $server )
+		{
+				$this->client->addServer( $server[ 'host' ], $server[ 'port' ] );
+		}
+	}
+
+
+
+
+	/**
+	 * @return array
+	 */
+	public function getConfigs()
+	{
+		return $this->configs;
+	}
+
+	/**
+	 * @return \GearmanClient
+	 */
+	public function getGearmanClient( )
+	{
+		return $this->client;
+	}
+
+
+
+
+	/**
+	 * @param \GearmanClient $client
+	 * @return Client
+	 */
+	protected function setGearmanClient( GearmanClient $client )
+	{
+		$this->client = $client;
+		return $this;
+	}
 	/**
 	 * @param array $configs
 	 * @return Client
@@ -35,14 +94,6 @@ class Client
 	{
 		$this->configs = $configs;
 		return $this;
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function getConfigs()
-	{
-		return $this->configs;
 	}
 
 	/**
