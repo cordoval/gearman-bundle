@@ -37,5 +37,5 @@
 			"Uecode\\GearmanBundle": ""
 		}
 	},
-	"target-dir": "Uecode\GearmanBundle"
+	"target-dir": "Uecode/GearmanBundle"
 }
