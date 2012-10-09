@@ -1,6 +1,6 @@
 {
 	"name":        "uecode/gearman-bundle",
-	"version":     "0.1.0",
+	"version":     "0.1.01",
 	"type":        "library",
 	"description": "Symfony2 Gearman Bundle",
 	"keywords":    ["php", "gearman", "job"],
