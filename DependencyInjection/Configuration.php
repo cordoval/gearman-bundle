@@ -1,9 +1,8 @@
 <?php
-namespace Uecode\GearmanBundle\DependancyInjection;
+namespace Uecode\GearmanBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * @author Aaron Scherer
@@ -13,7 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * Configuration for the Gearman Bundle
  */
-class Configuration implements ConfigurationInterface
+class Configuration implements \Symfony\Component\Config\Definition\ConfigurationInterface
 {
 	/**
 	 * {@inheritDoc}

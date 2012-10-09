@@ -6,7 +6,6 @@
 namespace Uecode\GearmanBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Uecode\Gearman\DependancyInjection\Configuration;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
@@ -21,7 +20,7 @@ class UecodeGearmanExtension extends Extension
 	 */
 	public function load( array $config, ContainerBuilder $container )
 	{
-		$configuration = new Configuration();
+		$configuration = new \Uecode\Gearman\DependencyInjection\Configuration();
 		$configuration = $this->processConfiguration( $configuration, $config );
 
 		$loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
