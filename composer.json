@@ -31,5 +31,11 @@
 	},
 	"suggest":     {
 		"monolog/monolog": "Allows more advanced logging of the application flow"
-	}
+	},
+	"autoload":    {
+		"psr-0": {
+			"Uecode\\GearmanBundle": ""
+		}
+	},
+	"target-dir": "Uecode\GearmanBundle"
 }
