@@ -3,7 +3,7 @@
  * @author Aaron Scherer
  * @date 10/8/12
  */
-namespace Uecode\GearmanBundle;
+namespace Uecode\GearmanBundle\Service;
 use Symfony\Component\DependencyInjection\Container;
 
 // Gearman Classes

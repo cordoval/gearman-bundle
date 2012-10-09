@@ -1,6 +1,0 @@
-services:
-    uecode:
-        gearman:
-            class: Uecode\GearmanBundle\Service\Client
-            calls:
-                - [ init, [@service_container] ]

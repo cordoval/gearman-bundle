@@ -3,12 +3,13 @@
  * @author Aaron Scherer
  * @date 10/8/12
  */
-namespace Uecode\GearmanBundle;
+namespace Uecode\GearmanBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Uecode Gearman Extension
@@ -18,11 +19,8 @@ class UecodeGearmanExtension extends Extension
 	/**
 	 * {@inheritdoc}
 	 */
-	public function load( array $config, ContainerBuilder $container )
+	public function load( array $configs, ContainerBuilder $container )
 	{
-		$configuration = new \Uecode\Gearman\DependencyInjection\Configuration();
-		$configuration = $this->processConfiguration( $configuration, $config );
-
 		$loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
 		$loader->load( 'services.yml' );
 	}
