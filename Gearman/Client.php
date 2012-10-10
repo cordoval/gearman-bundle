@@ -19,6 +19,16 @@ class Client extends GearmanClient
 		$this->addConnections( $configs[ 'connections' ] );
 	}
 
+	public function setServers( $servers )
+	{
+		$this->servers = $servers;
+	}
+
+	public function getServers()
+	{
+		return $this->servers;
+	}
+
 	/**
 	 * @param array $connections
 	 */
