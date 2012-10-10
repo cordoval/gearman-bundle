@@ -7,30 +7,31 @@ namespace Uecode\GearmanBundle\Service;
 use Symfony\Component\DependencyInjection\Container;
 
 // Gearman Classes
-use GearmanClient;
-use GearmanException;
-use GearmanJob;
-use GearmanTask;
+use Uecode\GearmanBundle\Gearman\Client;
+use Uecode\GearmanBundle\Gearman\Job;
 
-
-class Client
+class ClientService
 {
 
 	/**
 	 * @var Container;
 	 */
-	protected $container;
+	private $container;
 
 	/**
 	 * @var array
 	 */
-	protected $configs;
+	private $configs;
 
 	/**
-	 * @var GearmanClient
+	 * @var Client
 	 */
-	protected $client;
+	private $client;
 
+	/**
+	 * @var Job[]
+	 */
+	private $jobs = array();
 
 	/**
 	 * @param \Symfony\Component\DependencyInjection\Container $container
@@ -40,23 +41,21 @@ class Client
 		$this
 			->setContainer( $container )
 			->setConfigs( $container->getParameter( 'uecode.gearman' ) )
-			->setGearmanClient( new GearmanClient() )
-			->initializeConnections();
+			->setGearmanClient( new Client( $this->getConfigs() ) );
 	}
 
-	/**
-	 *
-	 */
-	public function initializeConnections()
+	public function createJob( $name, $payload, $priority = 'Normal', $block = true )
 	{
-		foreach( $this->configs[ 'connections' ] as $server )
-		{
-				$this->client->addServer( $server[ 'host' ], $server[ 'port' ] );
-		}
+		$job = new Job( $name, $payload );
+		$job->setClient( $this->getGearmanClient() );
+		$job->setPriority( $priority );
+		$job->setBlock( $block );
+
+		$result = $job->execute();
+
+		$this->jobs[ $name ] = $job;
+		return $result;
 	}
-
-
-
 
 	/**
 	 * @return array
@@ -67,7 +66,7 @@ class Client
 	}
 
 	/**
-	 * @return \GearmanClient
+	 * @return Client
 	 */
 	public function getGearmanClient( )
 	{
@@ -78,17 +77,18 @@ class Client
 
 
 	/**
-	 * @param \GearmanClient $client
-	 * @return Client
+	 * @param Client $client
+	 * @return ClientService
 	 */
-	protected function setGearmanClient( GearmanClient $client )
+	protected function setGearmanClient( Client $client )
 	{
 		$this->client = $client;
 		return $this;
 	}
+
 	/**
 	 * @param array $configs
-	 * @return Client
+	 * @return ClientService
 	 */
 	protected function setConfigs( array $configs )
 	{
@@ -98,7 +98,7 @@ class Client
 
 	/**
 	 * @param \Symfony\Component\DependencyInjection\Container $container
-	 * @return Client
+	 * @return ClientService
 	 */
 	protected function setContainer( Container $container )
 	{
