@@ -17,6 +17,7 @@ class Client extends GearmanClient
 	public function __construct( $configs )
 	{
 		$this->addConnections( $configs[ 'connections' ] );
+		$this->setTimeout( $configs[ 'timeout' ] );
 	}
 
 	public function setServers( $servers )
