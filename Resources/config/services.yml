@@ -1,5 +1,5 @@
 services:
     uecode.gearman:
-        class: Uecode\GearmanBundle\Service\Client
+        class: Uecode\GearmanBundle\Service\ClientService
         calls:
             - [ init, [@service_container] ]
