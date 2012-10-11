@@ -8,7 +8,7 @@ This bundle creates a simple way to incorporate Gearman into Symfony
 1. Add to composer.json under `require`
 
 ```
-"uecode/gearman": "dev-master",
+"uecode/gearman-bundle": "dev-master",
 ```
 
 2. Register in `AppKernel`
