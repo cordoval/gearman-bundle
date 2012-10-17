@@ -40,7 +40,7 @@ class ClientService
 	{
 		$this
 			->setContainer( $container )
-			->setConfigs( $container->getParameter( 'uecode.gearman' ) )
+			->setConfigs( $container->getParameter( 'uecode.gearman.client' ) )
 			->setGearmanClient( new Client( $this->getConfigs() ) );
 	}
 
@@ -51,10 +51,49 @@ class ClientService
 		$job->setPriority( $priority );
 		$job->setBlock( $block );
 
-		$result = $job->execute();
+		$i = 0;
+		do
+		{
+			if( $i >= $this->getConfig( 'attempts' ) )
+				break;
+			$job->execute();
+			$i++;
+			sleep( 1 );
+		}
+		while( $this->getGearmanClient()->getReturnCode() !== GEARMAN_SUCCESS );
+		$error = array( 'attempts' => $i, 'return_code' => $this->getGearmanClient()->getReturnCode() );
 
+		if( $this->getGearmanClient()->getReturnCode() !== GEARMAN_SUCCESS )
+		{
+			$error = array_merge( $error, $this->getGearmanClient()->getError() );
+		}
+		$job->setError( $error );
 		$this->jobs[ $name ] = $job;
-		return $result;
+		return $job;
+	}
+
+	public function createTask( $name, $payload, $priority = 'Normal', $block = true )
+	{
+
+	}
+
+	public function runTasks( )
+	{
+		$this->getGearmanClient()->runTasks();
+	}
+
+	public function checkJob( Job $job )
+	{
+		$handle = $job->getBlock() ? $job->getHash() : $job->getResult();
+		echo "\$this->getGearmanClient()->jobStatus( $handle );\n";
+		return $this->getGearmanClient()->jobStatus( $handle );
+	}
+
+	public function getConfig( $key )
+	{
+		if( !array_key_exists( $key, $this->configs ) )
+			throw new \Exception( sprintf( 'The `%s` key does not exist in the configs.', $key ) );
+		return $this->configs[ $key ];
 	}
 
 	/**
@@ -72,9 +111,6 @@ class ClientService
 	{
 		return $this->client;
 	}
-
-
-
 
 	/**
 	 * @param Client $client

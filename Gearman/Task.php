@@ -1,12 +1,14 @@
 <?php
 namespace Uecode\GearmanBundle\Gearman;
 
+use GearmanClient;
+
 /**
  * @author Aaron Scherer
  * @date 10/10/12
  */
 
-class Job
+class Task
 {
 	/**
 	 * Function Name
@@ -15,13 +17,13 @@ class Job
 	private $name = '';
 
 	/**
-	 * Job Payload
+	 * Task Payload
 	 * @var mixed
 	 */
 	private $payload;
 
 	/**
-	 * Job Priority
+	 * Task Priority
 	 * @var string
 	 */
 	private $priority = 'Normal';
@@ -33,7 +35,7 @@ class Job
 	private $block = true;
 
 	/**
-	 * Unique Job Identifier
+	 * Unique Task Identifier
 	 * @var string
 	 */
 	private $hash = '';
@@ -45,7 +47,7 @@ class Job
 	private $client;
 
 	/**
-	 * Result of job
+	 * Result of Task
 	 * @var mixed
 	 */
 	private $result;
@@ -70,7 +72,7 @@ class Job
 		$this->setResult(
 			$this->getClient()
 				->performAction(
-					'job',
+					'task',
 					$this->getName(),
 					$this->getPayload(),
 					$this->getHash(),
